@@ -68,4 +68,29 @@ class FinanceTracker:
         except Exception as e:
             print(f"Error loading data: {e}")
             
+    def create_sample_data(self) -> None:
+        """Create sample data"""
+        sample_data = [
+            {"date": "2023-01-01", "description": "Grocery Store", "amount": "-50", "category": "Food"},
+            {"date": "2023-01-02", "description": "Salary", "amount": "2000", "category": "Income"},
+            {"date": "2023-01-03", "description": "Electricity Bill", "amount": "-100", "category": "Utilities"},
+            {"date": "2023-01-04", "description": "Restaurant", "amount": "-75", "category": "Food"},
+            {"date": "2023-01-05", "description": "Freelance Work", "amount": "500", "category": "Income"},
+        ]
+        try:
+            os.makedirs(os.path.dirname(self.csv_file), exist_ok=True)
+            with open(self.csv_file, mode="w", newline='', encoding='utf-8') as file:
+                fieldnames = ["date", "description", "amount", "category"]
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(sample_data)
+                
+            print(f"Sample data created at {self.csv_file}.")
+            self.load_data()
             
+        except PermissionError:
+            print("Permission denied to create sample file.")
+        except Exception as e:
+            print(f"Error creating sample data: {e}")
+            
+    
