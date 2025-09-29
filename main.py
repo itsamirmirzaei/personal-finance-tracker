@@ -120,4 +120,16 @@ class FinanceTracker:
             'saving_rate': (balance / income * 100) if income > 0 else 0
         }
         
+    def categorize_expenses(self) -> Dict[str, int]:
+        """Categorize expenses with error handling"""
+        categories = {}
         
+        for transaction in self.transactions:
+            amount = self.safe_int_conversion(transaction["amount"])
+            if amount < 0:  # Only categorize expenses
+                category = transaction.get("category", "Uncategorized")
+                if category:
+                    categories[category] = categories.get(category, 0) + abs(amount)
+        return categories
+    
+    
