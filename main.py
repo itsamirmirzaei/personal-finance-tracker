@@ -204,4 +204,35 @@ class FinanceTracker:
             value_formatted = f"${value:.2f}".rjust(12)
             
             print(f"{lable_formatted} | {bar:<35} {value_formatted}")
+    
+    def export_summary(self, filename: str = "data/summary.txt") -> None:
+        """Export summary to text file"""
+        try:
+            with open(filename, mode="w", encoding='utf-8') as file:
+                stats = self.calculate_statistics()
+                if not stats:
+                    file.write("No valid data available.\n")
+                    return
+                
+                file.write("--- Financial Summary ---\n")
+                file.write(f"Total Income: ${stats['total_income']:.2f}\n")
+                file.write(f"Total Expenses: ${stats['total_expenses']:.2f}\n")
+                file.write(f"Balance: ${stats['balance']:.2f}\n")
+                file.write(f"Average Expense: ${stats['average_expense']:.2f}\n")
+                file.write(f"Max Expense: ${stats['max_expense']:.2f}\n")
+                file.write(f"Min Expense: ${stats['min_expense']:.2f}\n")
+                file.write(f"Saving Rate: {stats['saving_rate']:.2f}%\n\n")
+                
+                categories = self.categorize_expenses()
+                if categories:
+                    file.write("Expenses by Category:\n")
+                    for category, amount in sorted(categories.items(), key=lambda x: x[1], reverse=True):
+                        precentage = (amount / stats['total_expenses'] * 100) if stats['total_expenses'] > 0 else 0
+                        file.write(f"  {category}: ${amount:.2f} ({precentage:.2f}%)\n")
+                    
+            print(f"Summary exported to {filename}.")
             
+        except Exception as e:
+            print(f"Error exporting summary: {e}")
+            
+    
