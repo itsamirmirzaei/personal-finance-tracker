@@ -1,0 +1,12 @@
+--- Financial Summary ---
+Total Income: $2500.00
+Total Expenses: $225.00
+Balance: $2275.00
+Average Expense: $75.00
+Max Expense: $100.00
+Min Expense: $50.00
+Saving Rate: 91.00%
+
+Expenses by Category:
+  Food: $125.00 (55.56%)
+  Utilities: $100.00 (44.44%)
