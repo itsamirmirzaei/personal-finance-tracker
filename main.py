@@ -132,4 +132,21 @@ class FinanceTracker:
                     categories[category] = categories.get(category, 0) + abs(amount)
         return categories
     
+    def get_top_expenses(self, limit: int = 5) -> List[Dict[str, Union[str, int]]]:
+        """Get top individual expenses"""
+        expenses = []
+        
+        for transaction in self.transactions:
+            amount = self.safe_int_conversion(transaction["amount"])
+            if amount < 0:
+                expenses.append({
+                    "date": transaction["date"],
+                    "description": transaction["description"],
+                    "amount": abs(amount),
+                    "category": transaction.get("category", "Uncategorized")
+                })
+            
+        # Sort by amount and return top N
+        return sorted(expenses, key=lambda x: x["amount"], reverse=True)[:limit]
     
+            
