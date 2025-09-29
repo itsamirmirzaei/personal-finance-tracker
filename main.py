@@ -149,4 +149,36 @@ class FinanceTracker:
         # Sort by amount and return top N
         return sorted(expenses, key=lambda x: x["amount"], reverse=True)[:limit]
     
-            
+    def display_summary(self) -> None:
+        """Display statistical summary"""
+        stats = self.calculate_statistics()
+        if not stats:
+            print("No valid data available.")
+            return
+        
+        print("\n--- Financial Summary ---")
+        print(f"Total Income: ${stats['total_income']:.2f}")
+        print(f"Total Expenses: ${stats['total_expenses']:.2f}")
+        print(f"Balance: ${stats['balance']:.2f}")
+        print(f"Average Expense: ${stats['average_expense']:.2f}")
+        print(f"Max Expense: ${stats['max_expense']:.2f}")
+        print(f"Min Expense: ${stats['min_expense']:.2f}")
+        print(f"Saving Rate: {stats['saving_rate']:.2f}%")
+        
+        # Display expense categories
+        categories = self.categorize_expenses()
+        if categories:
+            print(f"\nExpenses by Category: ")
+            for category, amount in sorted(categories.items(), key=lambda x: x[1], reverse=True):
+                precentage = (amount / stats['total_expenses'] * 100) if stats['total_expenses'] > 0 else 0
+                print(f"  {category}: ${amount:.2f} ({precentage:.2f}%)")
+                
+        
+        # Display top expenses
+        top_expenses = self.get_top_expenses()
+        if top_expenses:
+            print(f"\nTop {len(top_expenses)} Expenses:")
+            for i, expense in enumerate(top_expenses, start=1):
+                print(f"  {i}. {expense['date']} - {expense['description']} - ${expense['amount']:.2f} ({expense['category']})")
+                
+    
