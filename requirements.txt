@@ -1,0 +1,11 @@
+# Personal Finance Tracker - Requirements
+# This project uses only Python standard library
+# No external dependencies required
+
+# Python >= 3.6
+
+# Standard library used: 
+# - csv: For working with CSV filed
+# - os: For file and directory operations
+# - datetime: For working with dates and times
+# - typing: For type hints and annontations
