@@ -93,4 +93,31 @@ class FinanceTracker:
         except Exception as e:
             print(f"Error creating sample data: {e}")
             
-    
+    def calculate_statistics(self) -> Optional[Dict[str, Union[int, float]]]:
+        """Calculate financial statistics"""
+        if not self.transactions:
+            print("No transactions to calculate statistics.")
+            return None
+        
+        amounts = [self.safe_int_conversion(txn["amount"]) for txn in self.transactions]
+        income = sum(amount for amount in amounts if amount > 0)
+        expenses = sum(amount for amount in amounts if amount < 0)
+        balance = income + expenses
+        
+        # Calculate additional statistics
+        expense_amounts = [abs(amount) for amount in amounts if amount < 0]
+        avg_expense = sum(expense_amounts) / len(expense_amounts) if expense_amounts else 0
+        max_expense = max(expense_amounts) if expense_amounts else 0    
+        min_expense = min(expense_amounts) if expense_amounts else 0    
+        
+        return {
+            "total_income": income,
+            "total_expenses": abs(expenses),
+            "balance": balance,
+            "average_expense": avg_expense,
+            "max_expense": max_expense,
+            "min_expense": min_expense, 
+            'saving_rate': (balance / income * 100) if income > 0 else 0
+        }
+        
+        
