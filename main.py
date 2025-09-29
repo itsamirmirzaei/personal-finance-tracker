@@ -181,4 +181,27 @@ class FinanceTracker:
             for i, expense in enumerate(top_expenses, start=1):
                 print(f"  {i}. {expense['date']} - {expense['description']} - ${expense['amount']:.2f} ({expense['category']})")
                 
-    
+    def create_ascii_char(self, data: Dict[str, int], title: str = "Chart") -> None:
+        """Create ASCII chart for categories"""
+        if not data:
+            print("No data to display in chart.")
+            return
+        
+        print(f"\n{title}")
+        
+        if not data:
+            return
+        
+        max_value = max(data.values())
+        max_width = 35  # Max width of the chart in characters
+        
+        for lable, value in sorted(data.items(), key=lambda x: x[1], reverse=True):
+            bar_length = int((value / max_value) * max_width) if max_value > 0 else 0
+            bar = '#' * bar_length
+            
+            # Format lable and value
+            lable_formatted = lable[:15].ljust(15)
+            value_formatted = f"${value:.2f}".rjust(12)
+            
+            print(f"{lable_formatted} | {bar:<35} {value_formatted}")
+            
