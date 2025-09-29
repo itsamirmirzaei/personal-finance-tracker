@@ -235,4 +235,34 @@ class FinanceTracker:
         except Exception as e:
             print(f"Error exporting summary: {e}")
             
-    
+def main() -> None:
+    """Main function with improved error handling"""
+    try:
+        print("Personal Finance Analysis System")
+            
+        tracker = FinanceTracker()
+        tracker.load_data()
+            
+        if not tracker.transactions:
+            print("No valid transactions found. Please check your data.")
+            return
+            
+        tracker.display_summary()
+            
+        # Expense chart
+        expenses = tracker.categorize_expenses()
+        if expenses:
+            tracker.create_ascii_char(expenses, "Expense Breakdown")
+                
+        # Ask user if they want to export
+        export_choice = input("\nExport summary ti file? (y/n): ")
+        if export_choice == "y":
+            tracker.export_summary()
+                
+    except KeyboardInterrupt:
+        print("\n\nProgram interrupdet by user. Goodby!")
+    except Exception as e:
+        print(f"\nAn unexpected error eccurred: {e}")
+            
+if __name__ == "__main__":
+    main()
